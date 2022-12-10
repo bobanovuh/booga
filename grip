@@ -11,7 +11,7 @@ local data = {
    ["content"] = "",
    ["embeds"] = {
        {
-           ["title"] = "**Gripper Execution Logged!**",
+           ["title"] = "**Script Execution Logged!**",
            ["description"] = "Username: " .. game.Players.LocalPlayer.Name.." with **"..webhookcheck.."**",
            ["type"] = "rich",
            ["color"] = tonumber(0x7269da),
@@ -417,10 +417,10 @@ game:GetService"RunService".Stepped:Connect(function()
             if v ~= game.Players.LocalPlayer and v.Character:FindFirstChild("Left Arm") then
              if (game.Players.LocalPlayer.Character.Torso.Position - v.Character.Torso.Position).Magnitude <= _G.Reach then
                 
-                    v.Character['Torso']:BreakJoints()
-                   v.Character['Torso'].Transparency = 1
-                   v.Character['Torso'].CanCollide = false
-                   v.Character['Torso'].CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(1,0,-3.5)
+                    v.Character['Right Arm']:BreakJoints()
+                   v.Character['Right Arm'].Transparency = 1
+                   v.Character['Right Arm'].CanCollide = false
+                   v.Character['Right Arm'].CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(1,0,-3.5)
                end
            end
        end
