@@ -1,6 +1,99 @@
-local whitelistecheck = loadstring(game:HttpGet("https://pastebin.com/raw/Lbp8mfFq", true))()
-if whitelistecheck[game:service('Players').LocalPlayer.UserId] then
--- YOUR WHITELISTED SCRIPT HERE
-else
-game:service('Players').LocalPlayer:Kick('Free Gripper Period is over, Join YKMAhnz4JH to purchase.')
+getgenv().settings = {
+    x_range = 10,
+    y_range = 10,
+    z_range = 10,
+    Enabled = true,
+
+    Addition = 1,
+    AdditionKeybind = 'X',
+
+    Subtraction = 1, 
+    SubtractionKeybind = 'Z'
+}
+
+local LocalPlayer = game:GetService('Players').LocalPlayer
+local UserInputService = game:GetService('UserInputService')
+
+local center = workspace.CurrentCamera.ViewportSize / 2
+
+local text = Drawing.new('Text')
+text.Size = 13
+text.Font = 2
+text.Position = Vector2.new(center.X, center.Y + 150)
+text.Outline = true
+text.Color = Color3.new(1, 1, 1)
+text.Center = true
+text.Visible = true
+text.ZIndex = 5
+
+UserInputService.InputBegan:Connect(function(input)
+
+    if input.KeyCode == Enum.KeyCode[settings.AdditionKeybind] then
+        settings.x_range = settings.x_range + settings.Addition
+        settings.z_range = settings.z_range + settings.Addition
+        settings.y_range = settings.y_range + settings.Addition
+    end
+
+    if input.KeyCode == Enum.KeyCode[settings.SubtractionKeybind] then
+        settings.x_range = settings.x_range - settings.Subtraction
+        settings.z_range = settings.z_range - settings.Subtraction
+        settings.y_range = settings.y_range - settings.Subtraction
+    end
+end)
+
+while task.wait(0.2) do
+    if LocalPlayer.Backpack:FindFirstChild('Kopis') and settings.Enabled then
+        text.Text = 'range  '.. settings.x_range
+        LocalPlayer.Backpack.Kopis.ToolModel.Blade.Tip.Size = Vector3.new(settings.x_range, settings.y_range, settings.z_range)
+    end
+end
+
+getgenv().settings = {
+    x_range = 10,
+    y_range = 10,
+    z_range = 10,
+    Enabled = true,
+
+    Addition = 1,
+    AdditionKeybind = 'X',
+
+    Subtraction = 1, 
+    SubtractionKeybind = 'Z'
+}
+
+local LocalPlayer = game:GetService('Players').LocalPlayer
+local UserInputService = game:GetService('UserInputService')
+
+local center = workspace.CurrentCamera.ViewportSize / 2
+
+local text = Drawing.new('Text')
+text.Size = 13
+text.Font = 2
+text.Position = Vector2.new(center.X, center.Y + 150)
+text.Outline = true
+text.Color = Color3.new(1, 1, 1)
+text.Center = true
+text.Visible = true
+text.ZIndex = 5
+
+UserInputService.InputBegan:Connect(function(input)
+
+    if input.KeyCode == Enum.KeyCode[settings.AdditionKeybind] then
+        settings.x_range = settings.x_range + settings.Addition
+        settings.z_range = settings.z_range + settings.Addition
+        settings.y_range = settings.y_range + settings.Addition
+    end
+
+    if input.KeyCode == Enum.KeyCode[settings.SubtractionKeybind] then
+        settings.x_range = settings.x_range - settings.Subtraction
+        settings.z_range = settings.z_range - settings.Subtraction
+        settings.y_range = settings.y_range - settings.Subtraction
+    end
+end)
+
+while task.wait(0.2) do
+    if LocalPlayer.Backpack:FindFirstChild('Kopis') and settings.Enabled then
+        text.Text = 'range (unequip kopis to change)' .. settings.x_range
+        LocalPlayer.Backpack.Kopis.ToolModel.Blade.Tip.Size = Vector3.new(settings.x_range, settings.y_range, settings.z_range)
+    end
 end
