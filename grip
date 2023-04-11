@@ -8,7 +8,7 @@ local webhookcheck =
 local url =
    "https://discord.com/api/webhooks/1095356363846189056/9fdyjyu2Ulbz8BUytsS9A5qyGoXzDsbXpHMQLogWIF7-2F7Bk86n6TDix3AgihPYbfmC"
 local data = {
-   ["content"] = " Oooo!! New Injection!",
+   ["content"] = "",
    ["embeds"] = {
        {
            ["title"] = "**Gripper Execution Logged!**",
