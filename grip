@@ -1,3 +1,16 @@
+for i,v in next, getgc() do
+    if typeof(v) == "function" and islclosure(v) and not is_synapse_function(v) then
+        local Constants = getconstants(v)
+        
+        if table.find(Constants, "Detected") and table.find(Constants, "crash") then
+            syn.set_thread_identity(2)
+            hookfunction(v, function()
+                return wait(9e9)
+            end)
+            syn.set_thread_identity(7)
+        end
+    end
+end
 local plr = game:GetService("Players").LocalPlayer
 
 local cclosure = syn_newcclosure or newcclosure or nil
@@ -20,6 +33,45 @@ oldNamecall = hookmetamethod(game, "__namecall", cclosure(function(self,...)
     
     return oldNamecall(self,...)
 end))
+
+local eventbypass
+
+eventbypass = hookmetamethod(game, "__namecall", function(self, ...)
+    local method = getnamecallmethod()
+    local args = {...}
+
+    if not checkcaller() and self.Name == "CheatEvent" and method == "FireServer" then
+        return; 
+    end
+
+    return eventbypass(self, ...)
+end)
+
+local eventbypass
+
+eventbypass = hookmetamethod(game, "__namecall", function(self, ...)
+    local method = getnamecallmethod()
+    local args = {...}
+
+    if not checkcaller() and self.Name == "SwordEvent" and method == "FireServer" then
+        return; 
+    end
+
+    return eventbypass(self, ...)
+end)
+
+local eventbypass
+
+eventbypass = hookmetamethod(game, "__namecall", function(self, ...)
+    local method = getnamecallmethod()
+    local args = {...}
+
+    if not checkcaller() and self.Name == "SyncSound" and method == "FireServer" then
+        return; 
+    end
+
+    return eventbypass(self, ...)
+end)
 
 local eventbypass
 
@@ -133,7 +185,7 @@ discord: Azucar#1111
 
 --]]
 
-_G.Reach = "10"
+_G.Reach = "14"
 _G.KeyBindHigher = "x"
 _G.KeyBindLower = "z"
 _G.ReachOff = false -- Set this to true if you want to disable the reach lol
@@ -165,7 +217,7 @@ local Mouse = game.Players.LocalPlayer:GetMouse()
         if key == _G.KeyBindHigher then
                  _G.Reach = _G.Reach + 1 
             	 game.StarterGui:SetCore("SendNotification", {
-                 Title = "Yurisploit Gripper";
+                 Title = "AZUCAR REACH";
                  Text = "Reach set to " .. _G.Reach;
                  Icon = "";
                  Duration = 1;})
@@ -180,7 +232,7 @@ local Mouse = game.Players.LocalPlayer:GetMouse()
         if key == _G.KeyBindLower then
                  _G.Reach = _G.Reach - 1 
             	 game.StarterGui:SetCore("SendNotification", {
-                 Title = "Yurisploit Gripper";
+                 Title = "AZUCAR REACH";
                  Text = "Reach set to " .. _G.Reach;
                  Icon = "";
                  Duration = 1;})
