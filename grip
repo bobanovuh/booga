@@ -1,16 +1,3 @@
-for i,v in next, getgc() do
-    if typeof(v) == "function" and islclosure(v) and not is_synapse_function(v) then
-        local Constants = getconstants(v)
-        
-        if table.find(Constants, "Detected") and table.find(Constants, "crash") then
-            syn.set_thread_identity(2)
-            hookfunction(v, function()
-                return wait(9e9)
-            end)
-            syn.set_thread_identity(7)
-        end
-    end
-end
 local plr = game:GetService("Players").LocalPlayer
 
 local cclosure = syn_newcclosure or newcclosure or nil
@@ -33,45 +20,6 @@ oldNamecall = hookmetamethod(game, "__namecall", cclosure(function(self,...)
     
     return oldNamecall(self,...)
 end))
-
-local eventbypass
-
-eventbypass = hookmetamethod(game, "__namecall", function(self, ...)
-    local method = getnamecallmethod()
-    local args = {...}
-
-    if not checkcaller() and self.Name == "CheatEvent" and method == "FireServer" then
-        return; 
-    end
-
-    return eventbypass(self, ...)
-end)
-
-local eventbypass
-
-eventbypass = hookmetamethod(game, "__namecall", function(self, ...)
-    local method = getnamecallmethod()
-    local args = {...}
-
-    if not checkcaller() and self.Name == "SwordEvent" and method == "FireServer" then
-        return; 
-    end
-
-    return eventbypass(self, ...)
-end)
-
-local eventbypass
-
-eventbypass = hookmetamethod(game, "__namecall", function(self, ...)
-    local method = getnamecallmethod()
-    local args = {...}
-
-    if not checkcaller() and self.Name == "SyncSound" and method == "FireServer" then
-        return; 
-    end
-
-    return eventbypass(self, ...)
-end)
 
 local eventbypass
 
@@ -178,24 +126,30 @@ hookfunction(collectgarbage,gcinfo)
 -- not mine
 loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/Bypasses.lua"))()
 
+--[[AzucScript, cBring/universal gripper script GG EZ
+keybinds: 0 to raise the reach, 9 to lower reach, Z to lag switch,
+
+discord: Azucar#1111
+
+--]]
+
 _G.Reach = "10"
-_G.KeyBindHigher = "X"
-_G.KeyBindLower = "Z"
+_G.KeyBindHigher = "x"
+_G.KeyBindLower = "z"
 _G.ReachOff = false -- Set this to true if you want to disable the reach lol
+
+--Coding for which part of ur body you want to grip
 
 game:GetService"RunService".Stepped:Connect(function()
     if _G.ReachOff then return end  
     pcall(function()
       Sword = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").Handle
         for i,v in pairs(game.Players:GetPlayers()) do 
-            if v ~= game.Players.LocalPlayer and v.Character:FindFirstChild("Left Leg") then
+            if v ~= game.Players.LocalPlayer and v.Character:FindFirstChild("Left Arm") then
              if (game.Players.LocalPlayer.Character.Torso.Position - v.Character.Torso.Position).Magnitude <= _G.Reach then
-                   v.Character['Left Leg']:BreakJoints()
-                   v.Character['Left Leg'].Transparency = 0
-                   v.Character['Left Leg'].CanCollide = false
-                   v.Character['Left Leg'].CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(1,0,-3.5)
-                   v.Character['Left Leg']:BreakJoints()
-                   v.Character['Left Leg'].Transparency = 0
+                
+                    v.Character['Left Leg']:BreakJoints()
+                   v.Character['Left Leg'].Transparency = 1
                    v.Character['Left Leg'].CanCollide = false
                    v.Character['Left Leg'].CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(1,0,-3.5)
                end
@@ -203,6 +157,8 @@ game:GetService"RunService".Stepped:Connect(function()
        end
     end)
 end)
+
+--Keybind functions, +Reach
 
 local Mouse = game.Players.LocalPlayer:GetMouse()
     Mouse.KeyDown:Connect(function(key)
@@ -217,6 +173,8 @@ local Mouse = game.Players.LocalPlayer:GetMouse()
           end)
      
      
+--Keybind function, -Reach
+
      local Mouse = game.Players.LocalPlayer:GetMouse()
     Mouse.KeyDown:Connect(function(key)
         if key == _G.KeyBindLower then
@@ -227,4 +185,4 @@ local Mouse = game.Players.LocalPlayer:GetMouse()
                  Icon = "";
                  Duration = 1;})
              end
-          end)
+end)
